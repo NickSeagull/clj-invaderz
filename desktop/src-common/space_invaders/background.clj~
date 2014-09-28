@@ -1,0 +1,11 @@
+(ns space-invaders.background
+  (:require [play-clj.core :refer :all]
+            [play-clj.g2d :refer :all]))
+
+(defn make [screen y]
+  (assoc (texture bg)
+    :type "Background"
+    :x 0
+    :y y
+    :width (width screen)
+    :height (height screen)))
