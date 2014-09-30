@@ -1,12 +1,6 @@
-## Introduction
+## CLJ Invaderz
 
-Space invaders in clojure
+You  start with 3  lifes, you lose 1  each time you get hit by an enemy.
+You gain 1 life every 1000 points. Every enemy gives you 50 points.
 
-## Contents
-
-* `android/src` Android-specific code
-* `desktop/resources` Images, audio, and other files
-* `desktop/src` Desktop-specific code
-* `desktop/src-common` Cross-platform game code
-* `ios/src` iOS-specific code
 
