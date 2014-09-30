@@ -18,9 +18,9 @@
 (defn- check-events
   [screen entities]
   (cond
-   (key-pressed? :a)
+   (key-pressed? :dpad-left)
    (player/move screen entities :left)
-   (key-pressed? :d)
+   (key-pressed? :dpad-right)
    (player/move screen entities :right)
    :else
    entities))
