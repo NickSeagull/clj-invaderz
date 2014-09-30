@@ -74,7 +74,7 @@
   [screen]
   (-> (assoc (texture player-sprite)
      	:type   "Player"
-        :lifes  3
+        :lifes  1
         :score  0
      	:x      (- (/ (width screen) 2) (/ player-width 2))
      	:y      bottom-margin

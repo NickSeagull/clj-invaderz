@@ -4,12 +4,21 @@
             [play-clj.g2d :refer :all]
             [space-invaders.main-level :as main-level]
             [space-invaders.sound-stat :as sound-stat]
-            [space-invaders.player :as player]))
+            [space-invaders.player :as player]
+            [clojure.java.io :as io]))
 
 (declare space-invaders main-level-screen game-over-screen)
 
 (defn game-over []
   (set-screen! space-invaders game-over-screen))
+
+(defn save-score [score]
+  (spit "score.temp" (str score)))
+
+(defn get-score []
+  (let [score (slurp "score.temp")]
+    (io/delete-file "score.temp")
+    score))
 
 (defscreen main-level-screen
   :on-show
@@ -23,7 +32,9 @@
     (let [new-entities (main-level/render screen entities)
           p (player/get-player new-entities)]
       (if (= (:lifes p) 0)
-        (game-over)
+        (do 
+          (save-score (:score p))
+          (game-over))
         (render! screen new-entities))))
 
   :on-key-down
@@ -106,14 +117,17 @@
                 :width (* 47 8)
                 :height (* 16 8)
                 :x (- (/ (width screen) 2) (/ (* 47 8) 2))
-                :y (- (height screen) 250))
+                :y (- (height screen) 200))
           ret (assoc (texture "pressret.png")
                 :width (* 32 8)
                 :height (* 4 8)
                 :x (- (/ (width screen) 2) (/ (* 32 8) 2))
-                :y 200)
-          boom (sound "explosion.wav" :play)]
-      [bg title msg ret]))
+                :y 150)
+          boom (sound "explosion.wav" :play)
+          score (assoc (label (str "Your score was " (get-score)) (color :white))
+                  :x 200
+                  :y (- (height screen) 30))]
+      [bg title msg ret score]))
 
   :on-render
   (fn [screen entities]

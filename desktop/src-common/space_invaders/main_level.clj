@@ -18,16 +18,16 @@
 (defn- check-events
   [screen entities]
   (cond
-   (key-pressed? :dpad-left)
+   (key-pressed? :a)
    (player/move screen entities :left)
-   (key-pressed? :dpad-right)
+   (key-pressed? :d)
    (player/move screen entities :right)
    :else
    entities))
 
 
 (defn spawn-enemy [screen entities]
-  (conj entities (enemy/make screen entities)))
+  (conj entities (enemy/make screen entities (+ 3 (* (/ 20 8000) (+ 1 (:score (player/get-player entities))))))))
 
 (defn make-bullet [screen entities]
   (let [player (player/get-player entities)
@@ -58,7 +58,7 @@
                      :type "UI"
                      :subtype "Score"
                      :x 50
-                     :y 70)
+                     :y (- (height screen) 70))
         lifes      (assoc 
                        (label 
                         (str "Lifes: " (:lifes player)) 
@@ -66,7 +66,7 @@
                      :type "UI"
                      :subtype "Lifes"
                      :x 50
-                     :y 50)]
+                     :y (- (height screen) 50))]
     (-> [bg1 bg2 player lifes score])))
 
 (defn render

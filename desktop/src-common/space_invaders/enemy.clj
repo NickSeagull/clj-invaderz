@@ -11,7 +11,6 @@
 (def ^:private size-scale     4)
 (def ^:private enemy-height   (* sprite-height size-scale))
 (def ^:private enemy-width    (* sprite-width size-scale))
-(def ^:private speed          18)
 
 (defn- random-x [screen]
   (int (rand (width screen))))
@@ -34,8 +33,8 @@
   (if (enemy? entity) 
     (if-not (out-of-bounds entity) 
       (let [a (Math/toRadians (:angle entity))
-            x (+ (:x entity) (* (Math/sin a) speed))
-            y (- (:y entity) (* (Math/cos a) speed))]
+            x (+ (:x entity) (* (Math/sin a) (:speed entity)))
+            y (- (:y entity) (* (Math/cos a) (:speed entity)))]
         (assoc entity
           :x x
           :y y))
@@ -76,13 +75,14 @@
       entity)
     entity))
 
-(defn make [screen entities]
+(defn make [screen entities speed]
   (-> (assoc (texture enemy-sprite)
         :type   "Enemy"
         :x      (random-x screen)
         :y      (height screen)
         :width  enemy-width
-        :height enemy-height)
+        :height enemy-height
+        :speed  speed)
       (get-angle entities)
       (game-object/update-hitbox)))
 
